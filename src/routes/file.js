@@ -9,7 +9,7 @@ const Router = express.Router();
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
-      cb(null, './files');
+      cb(null, './src/files');
     },
     filename(req, file, cb) {
       cb(null, `${new Date().getTime()}_${file.originalname}`);
@@ -76,7 +76,7 @@ Router.get('/download/:id', async (req, res) => {
     res.set({
       'Content-Type': file.file_mimetype
     });
-    res.sendFile(path.join(__dirname, 'client','build', file.file_path));
+    res.sendFile(path.join( 'C:/Users/Shanuka/Desktop/New folder/upload/', file.file_path));
   } catch (error) {
     res.status(400).send('Error while downloading file. Try again later.');
   }
