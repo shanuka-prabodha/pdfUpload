@@ -36,12 +36,19 @@ const fileRoute = require("./src/routes/file");
 
 
 const path = require('path')
-app.use(express.static(path.join(__dirname, '..', 'build')));
+//app.use(express.static(path.join(__dirname, '..', 'build')));
 app.use(fileRoute);
-
+/*
 app.get('*', (request, response) => {
   response.sendFile(path.join(__dirname, '..','build', 'index.html'));
+});*/
+
+app.use(express.static('client/build'));
+const path = require('path')
+app.get('*', (request, response) => {
+  response.sendFile(path.join(__dirname, 'client','build', 'index.html'));
 });
+
 
 
 /*
