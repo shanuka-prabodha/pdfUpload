@@ -35,7 +35,6 @@ const fileRoute = require("./src/routes/file");
 
 
 
-const path = require('path')
 //app.use(express.static(path.join(__dirname, '..', 'build')));
 app.use(fileRoute);
 /*
