@@ -14,9 +14,9 @@ function App() {
       <Router>
             <div>
                 <Header/>
-                <Route path="/" exact component={AllStudents}/>
+                <Route path="/" exact component={Bill}/>
                 <Route path="/add" exact component={AddStudent}/>
-                <Route path="/bill" exact component={Bill}/>
+              
                 <Route path="/payment" exact component={payment}/>
                 <Route path="/success" exact component={paymentsuccess}/>
                 <Route path="/UploadFile" exact component={UploadFile}/>
