@@ -32,13 +32,13 @@ const PaymentRouter = require("./src/routes/AtmUser");
 app.use("/atm",PaymentRouter);
 
 const fileRoute = require("./src/routes/file");
-
+app.use(fileRoute);
 
 
 const path = require('path')
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
-app.use(fileRoute);
+
 
 
 app.get('*', (request, response) => {
@@ -47,12 +47,7 @@ app.get('*', (request, response) => {
 
 
 
-/*
-app.use(express.static(path.join(__dirname, '..', 'build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
-});
-*/
+
 app.listen(PORT,()=>{
     console.log(`Server is up and running on port ${PORT}`)
 });

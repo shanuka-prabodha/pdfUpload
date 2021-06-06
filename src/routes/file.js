@@ -2,10 +2,12 @@
 
 const path = require('path');
 const express = require('express');
-const multer = require('multer');
 const File = require('../models/file');
+const  MulterGoogleCloudStorage = require('multer-google-storage');
+const  multer = require('multer');
 const Router = express.Router();
 
+/*
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
@@ -28,15 +30,36 @@ const upload = multer({
     }
     cb(undefined, true); // continue with upload
   }
-});
+});*/
+
+const uploadHandler = multer({
+    storage: MulterGoogleCloudStorage.storageEngine({
+    autoRetry:true,
+    bucket:"researchupload",
+    projectId: "conference-316016",
+    keyFilename:"./conference-316016-451340383f6e.json",
+    filename:(req,file,cb)=>{
+      cb(null, `${new Date().getTime()}_${file.originalname}`);
+    }
+
+  })
+})
+
+
+/*
+Router.post('/upload', uploadHandler.any(), function (req, res) {
+  console.log(req.files);
+  res.json(req.files);
+});*/
+
 
 Router.post(
   '/upload',
-  upload.single('file'),
-  async (req, res) => {
+  uploadHandler.single('file'),
+   (req, res) => {
     try {
+      console.log(req.files)
 
-      
       const { title, description } = req.body;
       const { path, mimetype } = req.file;
       const file = new File({
@@ -45,7 +68,10 @@ Router.post(
         file_path: path,
         file_mimetype: mimetype
       });
-      await file.save();
+
+      console.log(file)
+
+       file.save();
       res.send('file uploaded successfully.');
     } catch (error) {
       res.status(400).send('Error while uploading file. Try again later.');
@@ -76,9 +102,8 @@ Router.get('/download/:id', async (req, res) => {
     res.set({
       'Content-Type': file.file_mimetype
     });
-    console.log(process.cwd())
-    console.log(__filename);
-    res.sendFile(path.join( process.cwd(), file.file_path));
+console.log(file.file_path);
+    res.sendFile( file.file_path);
   } catch (error) {
     res.status(400).send('Error while downloading file. Try again later.');
   }
